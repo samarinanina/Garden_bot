@@ -1,4 +1,7 @@
 # Garden_bot
+![3](https://github.com/samarinanina/Garden_bot/assets/99652641/281e6f2d-5380-4712-94b3-d5d5ae2dc3a9)
+
+
 (фото присутствуют в scr/image/)
 
 есть две основные кнопки с / : /start и /continue. В остальном кнопки можно выбирать (это сделано для удобства пользователя)
