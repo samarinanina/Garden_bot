@@ -1,42 +1,73 @@
-import telebot
 from telebot import types
+from scr.db import *
+from scr.config import const
 
-bot = telebot.TeleBot('5661322452:AAG1JA7O3Du2MZu_YUV_sAgC6MI_-GjdsyI')
 
-
-@bot.message_handler(commands=['start'])
-def website(message):
+@bot.message_handler(commands=[const.start])
+def main_functions(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    options = types.KeyboardButton('посмотреть возможности')
+    options = types.KeyboardButton(const.op)
     markup.add(options)
-    bot.send_message(message.chat.id, 'Добро пожаловать', reply_markup=markup)
+    bot.send_message(message.chat.id, const.welcome, reply_markup=markup)
 
 
-@bot.message_handler(content_types=['text'])
-def func(message):
+@bot.message_handler(commands=[const.cont])
+def main_functions(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    if (message.text == "посмотреть возможности"):
-        have = types.KeyboardButton('растения в наличии')
-        buy = types.KeyboardButton('собираюсь купить')
-        markup.add(have, buy)
-        bot.send_message(message.chat.id, 'ваши дальнейшие действия?', reply_markup=markup)
-    elif (message.text == "собираюсь купить"):
-        check = types.KeyboardButton("посмотреть каталог")
-        add = types.KeyboardButton("обновить каталог")
-        back = types.KeyboardButton("вернуться в главное меню")
-        markup.add(check, add, back)
-        bot.send_message(message.chat.id, text= "чего именно вы хотите?", reply_markup=markup)
-    elif (message.text == "растения в наличии"):
-        check = types.KeyboardButton("посмотреть имеющиеся")
-        add = types.KeyboardButton("добавить новые")
-        back = types.KeyboardButton("вернуться в главное меню")
-        markup.add(check, add, back)
-        bot.send_message(message.chat.id, text="чего именно вы хотите?", reply_markup=markup)
+    options = types.KeyboardButton(const.op)
+    markup.add(options)
+    bot.send_message(message.chat.id, const.cont_1, reply_markup=markup)
 
-    elif(message.text == "вернуться в главное меню"):
-        options = types.KeyboardButton('посмотреть возможности')
+
+@bot.message_handler(content_types=[const.text])
+def menu(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    if (message.text == const.op):
+        have = types.KeyboardButton(const.in_stock)
+        buy = types.KeyboardButton(const.to_buy)
+        markup.add(have, buy)
+        bot.send_message(message.chat.id, const.next_move, reply_markup=markup)
+    elif (message.text == const.to_buy):
+        check = types.KeyboardButton(const.look)
+        add = types.KeyboardButton(const.new)
+        back = types.KeyboardButton(const.f_return)
+        markup.add(check, add, back)
+        bot.send_message(message.chat.id, text=const.wish, reply_markup=markup)
+    elif (message.text == const.in_stock):
+        check = types.KeyboardButton(const.have)
+        add = types.KeyboardButton(const.add_new)
+        back = types.KeyboardButton(const.f_return)
+        markup.add(check, add, back)
+        bot.send_message(message.chat.id, text=const.wish, reply_markup=markup)
+
+    elif (message.text == const.f_return):
+        options = types.KeyboardButton(const.op)
         markup.add(options)
-        bot.send_message(message.chat.id, 'Вы вернулись в главное меню', reply_markup=markup)
-    #elif (message.text == "в наличии"):
+        bot.send_message(message.chat.id, const.t_return, reply_markup=markup)
+    elif (message.text == const.new):
+        del_one = types.KeyboardButton(const.delete)
+        add = types.KeyboardButton(const.add)
+        change = types.KeyboardButton(const.change_to_have)
+        markup.add(del_one, add, change)
+        bot.send_message(message.chat.id, const.change, reply_markup=markup)
+    elif (message.text == const.add_new):
+        data_base(message, 1)
+    elif (message.text == const.look):
+        watch(message, 0)
+    elif (message.text == const.have):
+        watch(message, 1)
+    elif (message.text == const.delete):
+        watch(message, 0)
+        bot.send_message(message.chat.id, const.name_delete)
+        bot.register_next_step_handler(message, delete)
+    elif (message.text == const.add):
+        data_base(message, 0)
+    elif (message.text == const.change_to_have):
+        watch(message, 0)
+        bot.send_message(message.chat.id, const.name_change)
+        bot.register_next_step_handler(message, changement)
+    else:
+        bot.send_message(message.chat.id, const.wrong_message)
+
 
 bot.polling(none_stop=True)
