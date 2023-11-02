@@ -5,7 +5,7 @@
 есть две основные кнопки с / : /start и /continue. В остальном кнопки можно выбирать (это сделано для удобства пользователя)
 
 бот для садоводства, в котором можно: 
-![3][(https://github.com/samarinanina/Garden_bot/dev/scr/3.png)](https://github.com/samarinanina/Garden_bot/blob/dev/scr/image/3.png)
+![3](https://github.com/samarinanina/Garden_bot/blob/dev/scr/image/3.png)
 
 сохранять нужную информацию по растениям, удобрениям и прочему 
 (с помощью базы данных, в которой хранятся купленные растения и те, которые пользователь только собирается купить)
